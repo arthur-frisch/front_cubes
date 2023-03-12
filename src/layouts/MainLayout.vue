@@ -11,7 +11,15 @@
           @click="toggleLeftDrawer"
         />
         <q-toolbar-title> Application raspberry </q-toolbar-title>
-
+        <q-btn
+          class="q-mx-sm"
+          icon="person_add"
+          dense
+          round
+          flat
+          @click="modalAdduser = true"
+          ><q-tooltip>Ajouter un utilisateur</q-tooltip>
+        </q-btn>
         <q-btn class="q-mx-sm" icon="logout" dense round flat @click="logOut()"
           ><q-tooltip>Déconnexion</q-tooltip>
         </q-btn>
@@ -33,6 +41,22 @@
     <q-page-container>
       <router-view />
     </q-page-container>
+    <q-dialog v-model="modalAdduser">
+      <q-card>
+        <q-card-section class="row items-center q-pb-sm bg-primary text-white">
+          <div class="text-h6">Créer un utilisateur</div>
+          <q-space />
+          <q-btn icon="close" flat round dense v-close-popup />
+        </q-card-section>
+
+        <q-card-section>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum
+          repellendus sit voluptate voluptas eveniet porro. Rerum blanditiis
+          perferendis totam, ea at omnis vel numquam exercitationem aut, natus
+          minima, porro labore.
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </q-layout>
 </template>
 
@@ -47,12 +71,6 @@ const linksList = [
     caption: "Se connecter",
     icon: "login",
     to: "/login",
-  },
-  {
-    title: "Register",
-    caption: "Créer un utilisateur",
-    icon: "add_circle",
-    to: "/register",
   },
 ];
 
@@ -70,6 +88,7 @@ export default defineComponent({
 
   setup() {
     const leftDrawerOpen = ref(false);
+    const modalAdduser = ref(false);
     const $router = useRouter();
     return {
       essentialLinks: linksList,
@@ -82,6 +101,7 @@ export default defineComponent({
         localStorage.removeItem("user");
         $router.push("/login");
       },
+      modalAdduser,
     };
   },
 });
