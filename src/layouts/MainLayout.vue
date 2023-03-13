@@ -10,7 +10,7 @@
           aria-label="Menu"
           @click="toggleLeftDrawer"
         />
-        <q-toolbar-title> Application raspberry </q-toolbar-title>
+        <q-toolbar-title> Projet raspberry </q-toolbar-title>
         <q-btn
           class="q-mx-sm"
           icon="person_add"
@@ -89,7 +89,7 @@
           <q-input
             v-model="confirmPassword"
             :type="isConfirmPwd ? 'password' : 'text'"
-            label="Confirmer son mot de passe"
+            label="Confirmer le mot de passe"
           >
             <template v-slot:append>
               <q-icon
@@ -99,6 +99,10 @@
               />
             </template>
           </q-input>
+        </q-card-section>
+        
+        <q-card-section>
+          <q-checkbox v-model="isNotRobot" label="Je ne suis pas un robot" />
         </q-card-section>
 
         <q-separator inset />
@@ -115,7 +119,7 @@
             type="submit"
             color="primary"
             @click="register()"
-            :disable="!isValid"
+            :disable="!isValid || !isNotRobot"
           ></q-btn>
         </q-card-section>
       </q-card>
