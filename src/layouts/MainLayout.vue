@@ -100,9 +100,14 @@
             </template>
           </q-input>
         </q-card-section>
-        
+
         <q-card-section>
-          <q-checkbox v-model="isNotRobot" label="Je ne suis pas un robot" />
+          <vue-recaptcha
+            ref="recaptcha"
+            @verify="onVerify"
+            sitekey="829e9458-d759-43ab-b902-d0c3f001bd3b"
+          >
+          </vue-recaptcha>
         </q-card-section>
 
         <q-separator inset />
@@ -119,7 +124,7 @@
             type="submit"
             color="primary"
             @click="register()"
-            :disable="!isValid || !isNotRobot"
+            :disable="!isValid"
           ></q-btn>
         </q-card-section>
       </q-card>
@@ -131,6 +136,9 @@
 import { defineComponent, ref, computed } from "vue";
 import EssentialLink from "components/EssentialLink.vue";
 import { useRouter } from "vue-router";
+import { VueRecaptcha } from "vue-recaptcha";
+import { api } from "src/boot/axios";
+import { useQuasar } from "quasar";
 
 const linksList = [
   {
@@ -146,6 +154,7 @@ export default defineComponent({
 
   components: {
     EssentialLink,
+    VueRecaptcha,
   },
 
   setup() {
@@ -163,10 +172,16 @@ export default defineComponent({
           username.value &&
           password.value &&
           confirmPassword.value &&
-          password.value === confirmPassword.value
+          password.value === confirmPassword.value &&
+          /^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{6,})\S$/.test(
+            password.value
+          ) &&
+          !isRobot.value
         );
       },
     });
+    const isRobot = ref(true);
+    const $q = useQuasar();
     return {
       essentialLinks: linksList,
       leftDrawerOpen,
@@ -185,7 +200,37 @@ export default defineComponent({
       password,
       confirmPassword,
       isValid,
+      isRobot,
+      onVerify(response) {
+        if (response) isRobot.value = false;
+      },
+      async register() {
+        try {
+          const response = await api.post("/user/create", {
+            username: username.value,
+            password: password.value,
+          });
+          if (response) {
+            $q.notify({
+              message: "Utilisateur crée avec succès !",
+              color: "primary",
+            });
+          } else
+            $q.notify({
+              message: "Erreur lors de la création de l'utilisateur",
+              color: "negative",
+            });
+          modalAdduser.value = false;
+        } catch (error) {
+          console.log(error);
+        }
+      },
     };
+  },
+  mounted() {
+    let recaptchaScript = document.createElement("script");
+    recaptchaScript.setAttribute("src", "https://hcaptcha.com/1/api.js");
+    document.head.appendChild(recaptchaScript);
   },
 });
 </script>
