@@ -128,13 +128,19 @@ import dayjs from "dayjs";
 
 const linksList = [
   {
-    title: "Login",
+    title: "Accueil",
+    caption: "Retour à l'accueil",
+    icon: "house",
+    to: "/",
+  },
+  {
+    title: "Connexion",
     caption: "Se connecter",
     icon: "login",
     to: "/login",
   },
   {
-    title: "Records",
+    title: "Enregistrements",
     caption: "Voir les enregistrements",
     icon: "login",
     to: "/records",
