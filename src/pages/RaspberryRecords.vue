@@ -2,20 +2,15 @@
   <q-layout view="lHh Lpr lFf">
     <NavbarComponent />
     <q-layout class="q-pt-xl">
-      <div class="q-pa-xl">
-        <q-card>
-          <q-btn
-            class="q-ma-xl"
-            icon="add"
-            dense
-            round
-            flat
-            @click="modalAddRecords = true"
-            ><q-tooltip>Ajouter un enregistrement</q-tooltip>
-          </q-btn>
-        </q-card>
+      <div class="q-pa-lg">
+        <q-btn
+          dense
+          label="Ajouter un enregistrement"
+          @click="modalAddRecords = true"
+          ><q-tooltip>Ajouter un enregistrement</q-tooltip>
+        </q-btn>
         <q-table
-          class="q-my-xl"
+          class="q-my-lg"
           title="Enregistrements"
           :rows="apiData"
           :columns="columns"
