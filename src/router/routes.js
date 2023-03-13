@@ -8,6 +8,11 @@ const routes = [
     path: "/login",
     component: () => import("pages/LoginPage.vue"),
   },
+  {
+    path: "/records",
+    component: () => import("pages/RaspberryRecords.vue"),
+    meta: { requiredAuth: true },
+  },
 
   // Always leave this as last one,
   // but you can also remove it
