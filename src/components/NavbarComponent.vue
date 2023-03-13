@@ -10,7 +10,7 @@
         @click="toggleLeftDrawer"
       />
       <q-toolbar-title>
-        Bienvenu {{ fetchUsername() }} sur notre projet, Nancy {{ getDate() }}
+        Bienvenu sur notre projet {{ fetchUsername() }}, Nancy {{ getDate() }}
       </q-toolbar-title>
       <q-btn
         class="q-mx-sm"

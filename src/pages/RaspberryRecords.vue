@@ -2,21 +2,25 @@
   <q-layout view="lHh Lpr lFf">
     <NavbarComponent />
     <q-layout class="q-pt-xl">
-      <q-btn
-        class="q-mx-sm"
-        icon="add"
-        dense
-        round
-        flat
-        @click="modalAddRecords = true"
-        ><q-tooltip>Ajouter un enregistrement</q-tooltip>
-      </q-btn>
       <div class="q-pa-xl">
+        <q-card>
+          <q-btn
+            class="q-ma-xl"
+            icon="add"
+            dense
+            round
+            flat
+            @click="modalAddRecords = true"
+            ><q-tooltip>Ajouter un enregistrement</q-tooltip>
+          </q-btn>
+        </q-card>
         <q-table
+          class="q-my-xl"
           title="Enregistrements"
           :rows="apiData"
           :columns="columns"
           row-key="name"
+          no-results-label="Inconnu"
         />
       </div>
     </q-layout>
@@ -105,7 +109,7 @@ const columns = [
     label: "Pression",
     align: "center",
     field: (row) => row.pressure,
-    format: (val) => `${val}`,
+    format: (val) => `${val ? val : "Inconnue"}`,
     sortable: true,
   },
   {
@@ -114,7 +118,7 @@ const columns = [
     label: "Adresse IP",
     align: "center",
     field: (row) => row.ipAddress,
-    format: (val) => `${val}`,
+    format: (val) => `${val ? val : "Inconnue"}`,
     sortable: true,
   },
 ];
