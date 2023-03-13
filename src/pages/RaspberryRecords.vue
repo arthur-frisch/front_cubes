@@ -20,7 +20,7 @@
       </div>
     </q-layout>
     <q-dialog v-model="modalAddRecords">
-      <q-card>
+      <q-card style="width: 500px">
         <q-card-section class="row items-center q-pb-sm bg-primary text-white">
           <div class="text-h6">Créer un enregistrement</div>
           <q-space />
@@ -38,7 +38,7 @@
         </q-card-section>
 
         <q-card-section class="q-pt-none">
-          <q-input v-model="temperature" label="temperature"> </q-input>
+          <q-input v-model="temperature" label="Température"> </q-input>
         </q-card-section>
 
         <q-card-section class="q-pt-none">
@@ -95,7 +95,7 @@ const columns = [
     label: "Température",
     align: "center",
     field: (row) => row.temperature,
-    format: (val) => `${val}`,
+    format: (val) => `${val}°C`,
     sortable: true,
   },
   {
@@ -104,7 +104,7 @@ const columns = [
     label: "Pression",
     align: "center",
     field: (row) => row.pressure,
-    format: (val) => `${val ? val : "Inconnue"}`,
+    format: (val) => `${val ? val + " hPa" : "Inconnue"}`,
     sortable: true,
   },
   {

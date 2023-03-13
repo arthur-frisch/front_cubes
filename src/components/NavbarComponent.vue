@@ -142,7 +142,7 @@ const linksList = [
   {
     title: "Enregistrements",
     caption: "Voir les enregistrements",
-    icon: "login",
+    icon: "thermostat",
     to: "/records",
   },
 ];

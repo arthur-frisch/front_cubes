@@ -1,6 +1,6 @@
 <template>
-  <div class="fullscreen q-pa-md flex flex-center">
-    <q-card bordered class="my-card" window-width="50">
+  <div class="fullscreen q-pa-md flex flex-center bgimage">
+    <q-card bordered class="my-card" style="width: 400px">
       <q-card-section>
         <div class="text-h6">Connexion</div>
       </q-card-section>
@@ -79,9 +79,10 @@ const isValid = computed({
 
 const isPwd = ref(true);
 </script>
-
-<style lang="sass" scoped>
-.my-card
-  width: 100%
-  max-width: 250px
+<style>
+.bgimage {
+  background-image: url("../assets/accueil_1.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 </style>
