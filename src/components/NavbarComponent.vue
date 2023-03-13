@@ -9,7 +9,9 @@
         aria-label="Menu"
         @click="toggleLeftDrawer"
       />
-      <q-toolbar-title> Projet raspberry </q-toolbar-title>
+      <q-toolbar-title>
+        Bienvenu {{ fetchUsername() }} sur notre projet, Nancy {{ getDate() }}
+      </q-toolbar-title>
       <q-btn
         class="q-mx-sm"
         icon="person_add"
@@ -122,6 +124,7 @@ import { api } from "src/boot/axios";
 import { useQuasar } from "quasar";
 import { useRouter } from "vue-router";
 import { ref, computed, defineComponent } from "vue";
+import dayjs from "dayjs";
 
 const linksList = [
   {
@@ -144,6 +147,20 @@ export default defineComponent({
     VueRecaptcha,
   },
   setup() {
+    const month = ref([
+      "Janvier",
+      "Février",
+      "Mars",
+      "Avril",
+      "Mai",
+      "Juin",
+      "Juillet",
+      "Aout",
+      "Septembre",
+      "Octobre",
+      "Novembre",
+      "Décembre",
+    ]);
     const leftDrawerOpen = ref(false);
     const modalAdduser = ref(false);
     const $router = useRouter();
@@ -210,6 +227,16 @@ export default defineComponent({
         } catch (error) {
           console.log(error);
         }
+      },
+      month,
+      getDate() {
+        const currentMonth = month.value[dayjs().month()];
+        const day = dayjs().format("DD");
+        const year = dayjs().year();
+        return `le ${day} ${currentMonth} ${year}`;
+      },
+      fetchUsername() {
+        return JSON.parse(localStorage.getItem("user")).username;
       },
     };
   },
