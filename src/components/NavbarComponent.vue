@@ -14,6 +14,16 @@
       </q-toolbar-title>
       <q-btn
         class="q-mx-sm"
+        icon="cast_connected"
+        dense
+        flat
+        round
+        @click="openModalRaspberry()"
+      >
+        <q-tooltip> Voir les raspberry </q-tooltip>
+      </q-btn>
+      <q-btn
+        class="q-mx-sm"
         icon="person_add"
         dense
         round
@@ -116,6 +126,40 @@
       </q-card-section>
     </q-card>
   </q-dialog>
+  <q-dialog v-model="dialogRaspberry">
+    <q-card style="width: 600px; height: 450px">
+      <q-card-section class="row items-center q-pb-sm bg-primary text-white">
+        <div class="text-h5">Liste des raspberry</div>
+        <q-space />
+        <q-btn icon="close" flat round dense @click="closeRaspberryModal()" />
+      </q-card-section>
+      <q-card-section>
+        <span class="text-h7 text-grey"
+          >Dernière heure d'actualisation : {{ lastReload }}</span
+        >
+      </q-card-section>
+      <q-card-section>
+        <q-table :rows="raspberryData.data" :columns="columns">
+          <template #body-cell-active="props">
+            <q-td :props="props">
+              <q-icon
+                name="fiber_manual_record"
+                :color="props.value ? 'positive' : 'negative'"
+              >
+                <q-tooltip>{{
+                  props.value
+                    ? `Connecté depuis ${getLastUpdate(props.row.updatedAt)}`
+                    : `Déconnecté depuis
+               ${getLastUpdate(props.row.updatedAt)}`
+                }}</q-tooltip>
+              </q-icon>
+            </q-td>
+          </template>
+        </q-table>
+      </q-card-section>
+      <q-space />
+    </q-card>
+  </q-dialog>
 </template>
 <script>
 import EssentialLink from "./EssentialLink.vue";
@@ -197,6 +241,48 @@ export default defineComponent({
     });
     const isRobot = ref(true);
     const $q = useQuasar();
+    const dialogRaspberry = ref(false);
+    const lastReload = ref("");
+    const raspberryData = ref([]);
+    const columns = ref([
+      {
+        name: "number",
+        required: true,
+        label: "Numéro",
+        align: "center",
+        field: (row) => row.id,
+        format: (val) => val,
+        sortable: false,
+      },
+      {
+        name: "macAddress",
+        required: true,
+        label: "Adresse MAC",
+        align: "center",
+        field: (row) => row.macAddress,
+        format: (val) => `${val}`,
+        sortable: false,
+      },
+      {
+        name: "createdAt",
+        required: true,
+        label: "Date de création",
+        align: "center",
+        field: (row) => dayjs(row.createdAt).format("DD-MM-YYYY"),
+        format: (val) => `${val}`,
+        sortable: true,
+      },
+      {
+        name: "active",
+        required: false,
+        label: "Actif",
+        align: "center",
+        field: (row) => row.isActive,
+        format: (val) => val,
+        sortable: false,
+      },
+    ]);
+    const interval = ref(0);
     return {
       essentialLinks: linksList,
       leftDrawerOpen,
@@ -249,6 +335,57 @@ export default defineComponent({
       },
       fetchUsername() {
         return JSON.parse(localStorage.getItem("user")).username;
+      },
+      dialogRaspberry,
+      lastReload,
+      raspberryData,
+      async openModalRaspberry() {
+        dialogRaspberry.value = true;
+        lastReload.value = `${dayjs().hour()}h${
+          dayjs().minute() < 10 ? "0" + dayjs().minute() : dayjs().minute()
+        }`;
+        raspberryData.value = await api.get("raspberry/all");
+        interval.value = setInterval(async () => {
+          raspberryData.value = await api.get("raspberry/all");
+          lastReload.value = `${dayjs().hour()}h${
+            dayjs().minute() < 10 ? "0" + dayjs().minute() : dayjs().minute()
+          }`;
+        }, 15000);
+      },
+      dayjs,
+      getLastUpdate(date) {
+        const date1 = dayjs(date);
+        const date2 = dayjs();
+
+        let minutes = date2.diff(date1, "minute");
+        const days = Math.floor(minutes / (24 * 60));
+        minutes -= days * 24 * 60;
+        const hours = Math.floor(minutes / 60);
+        minutes -= hours * 60;
+        let result = "";
+        if (days > 0) {
+          result += `${days} Jours `;
+        }
+
+        if (hours > 0) {
+          result += `${hours} Heures `;
+        }
+
+        if (minutes > 0) {
+          result += `${minutes} Minutes`;
+        }
+
+        // Si la dernière update s'est effectué il y à moins d'une minute
+        if (minutes === 0 && hours === 0 && days === 0) {
+          result += "0 Minutes";
+        }
+
+        return result.trim();
+      },
+      columns,
+      closeRaspberryModal() {
+        dialogRaspberry.value = false;
+        clearInterval(interval.value);
       },
     };
   },

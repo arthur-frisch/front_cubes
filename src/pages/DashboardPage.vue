@@ -7,11 +7,11 @@
         <span>Tableau de bord</span>
       </div>
       <span class="text-h7 text-grey"
-        >Dernière date d'actualisation : {{ lastReload }}</span
+        >Dernière heure d'actualisation : {{ lastReload }}</span
       >
     </div>
 
-    <div class="q-mt-md row justify-center">
+    <div class="q-mt-sm row justify-center">
       <div class="q-mt-md">
         <q-card
           class="flex justify-center q-mx-md"
@@ -30,7 +30,7 @@
           style="width: 530px; height: 450px"
         >
           <q-card-section>
-            <div class="text-h6">Moyenne des températures</div>
+            <div class="text-h6">Moyennes de l'humidité et de la pression</div>
           </q-card-section>
           <q-card-section style="width: 100%; height: 100%">
             <div class="q-mb-xl" id="chart2"></div> </q-card-section
@@ -113,11 +113,11 @@ async function renderChartTwo() {
     colors: ["#FF1654", "#247BA0"],
     series: [
       {
-        name: "Series A",
+        name: "Pression",
         data: data.data.statsPressureMoy,
       },
       {
-        name: "Series B",
+        name: "Humidité",
         data: data.data.statsHumidityMoy,
       },
     ],
@@ -229,6 +229,10 @@ export default {
 <style>
 .title {
   margin-top: 7%;
-  margin-left: 3.5%;
+  margin-left: 6.2%;
+}
+
+body {
+  overflow: hidden;
 }
 </style>
