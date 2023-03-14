@@ -10,7 +10,7 @@
         @click="toggleLeftDrawer"
       />
       <q-toolbar-title>
-        Bienvenu sur notre projet {{ fetchUsername() }}, Nancy {{ getDate() }}
+        Bienvenue sur notre projet {{ fetchUsername() }}, Nancy {{ getDate() }}
       </q-toolbar-title>
       <q-btn
         class="q-mx-sm"
@@ -144,6 +144,12 @@ const linksList = [
     caption: "Voir les enregistrements",
     icon: "thermostat",
     to: "/records",
+  },
+  {
+    title: "Tableau de bord",
+    caption: "Voir les statistiques",
+    icon: "dashboard",
+    to: "/dashboard",
   },
 ];
 export default defineComponent({

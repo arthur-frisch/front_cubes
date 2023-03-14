@@ -13,9 +13,11 @@ const routes = [
     component: () => import("pages/RaspberryRecords.vue"),
     meta: { requiredAuth: true },
   },
-
-  // Always leave this as last one,
-  // but you can also remove it
+  {
+    path: "/dashboard",
+    component: () => import("pages/DashboardPage.vue"),
+    meta: { requiredAuth: true },
+  },
   {
     path: "/:catchAll(.*)*",
     component: () => import("pages/ErrorNotFound.vue"),
