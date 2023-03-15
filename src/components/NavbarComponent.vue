@@ -350,6 +350,21 @@ export default defineComponent({
           lastReload.value = `${dayjs().hour()}h${
             dayjs().minute() < 10 ? "0" + dayjs().minute() : dayjs().minute()
           }`;
+          const test = raspberryData.value.data.filter((r) => r.isActive);
+          if (test.length) {
+            test.forEach(async (e) => {
+              const raspRecord = await api.get("/record/many", { id: e.id });
+              const lastRecord = raspRecord.data[0];
+              if (
+                Math.abs(dayjs(lastRecord.createdAt).diff(dayjs(), "seconds")) >
+                30
+              )
+                api.put("raspberry/update", {
+                  where: { id: e.id },
+                  data: { isActive: false },
+                });
+            });
+          }
         }, 15000);
       },
       dayjs,
