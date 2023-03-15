@@ -68,7 +68,6 @@ function getCurrentWeekDay() {
 async function renderChartOne() {
   const data = await api.get("/record/week/statistics");
   const currentWeek = getCurrentWeekDay();
-  console.log(currentWeek);
   const chartOptions = {
     chart: {
       type: "bar",
