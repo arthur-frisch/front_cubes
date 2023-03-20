@@ -313,7 +313,7 @@ export default defineComponent({
           });
           if (response) {
             $q.notify({
-              message: "Utilisateur crée avec succès !",
+              message: "Utilisateur créé avec succès !",
               color: "primary",
             });
           } else
